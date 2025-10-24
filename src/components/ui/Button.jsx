@@ -1,3 +1,4 @@
+// src/components/ui/Button.jsx
 import React from 'react';
 
 const Button = ({
@@ -11,9 +12,9 @@ const Button = ({
     const baseClasses = 'font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
 
     const variants = {
-        primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
-        secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-900 focus:ring-gray-500',
-        outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500'
+        primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed',
+        secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-900 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed',
+        outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed'
     };
 
     const sizes = {
@@ -24,9 +25,7 @@ const Button = ({
 
     return (
         <button
-            className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className} ${
-                disabled ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
+            className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`}
             disabled={disabled}
             {...props}
         >
