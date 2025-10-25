@@ -18,12 +18,10 @@ body {
     min-height: 100vh;
 }
 
-/* Remove any default styling that might conflict */
 * {
     box-sizing: border-box;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
 }
