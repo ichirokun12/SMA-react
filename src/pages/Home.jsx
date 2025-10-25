@@ -1,16 +1,14 @@
-
+// src/pages/Home.jsx
 import React, { useState, useEffect } from 'react';
-import PostCard from '../components/posts/PostCard';
-import Navbar from '../components/common/Navbar';
+import PostCard from '@components/posts/PostCard';
+import Navbar from '@components/common/Navbar';
 
 const Home = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Simulate API call
         const fetchPosts = async () => {
-            // Replace with actual API call
             const mockPosts = [
                 {
                     id: 1,
@@ -48,22 +46,22 @@ const Home = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
                 <Navbar />
                 <div className="max-w-2xl mx-auto pt-8">
                     <div className="space-y-6">
                         {[1, 2, 3].map((i) => (
-                            <div key={i} className="bg-white rounded-xl p-6 animate-pulse">
+                            <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-6 animate-pulse">
                                 <div className="flex items-center space-x-3 mb-4">
-                                    <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+                                    <div className="w-10 h-10 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
                                     <div className="space-y-2">
-                                        <div className="h-4 bg-gray-300 rounded w-24"></div>
-                                        <div className="h-3 bg-gray-300 rounded w-16"></div>
+                                        <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-24"></div>
+                                        <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-16"></div>
                                     </div>
                                 </div>
                                 <div className="space-y-3">
-                                    <div className="h-4 bg-gray-300 rounded w-full"></div>
-                                    <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+                                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
                                 </div>
                             </div>
                         ))}
@@ -74,7 +72,7 @@ const Home = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
             <Navbar />
             <div className="max-w-2xl mx-auto pt-8 px-4">
                 <div className="space-y-6">
