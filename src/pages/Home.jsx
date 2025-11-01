@@ -1,7 +1,7 @@
 // src/pages/Home.jsx
 import React, { useState, useEffect } from 'react';
-import PostCard from '@components/posts/PostCard';
-import Navbar from '@components/common/Navbar';
+import PostCard from '../components/posts/PostCard';
+import Navbar from '../components/common/Navbar';
 
 const Home = () => {
     const [posts, setPosts] = useState([]);

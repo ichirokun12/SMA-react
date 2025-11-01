@@ -1,7 +1,7 @@
-
+// src/pages/Register.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '@context/AuthContext.jsx';
+import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 
@@ -60,11 +60,11 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-100">
-            <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
+            <div className="max-w-md w-full space-y-8 p-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
                 <div className="text-center">
-                    <h2 className="text-3xl font-bold text-gray-900">Join Us</h2>
-                    <p className="mt-2 text-gray-600">Create your account</p>
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Join Us</h2>
+                    <p className="mt-2 text-gray-600 dark:text-gray-400">Create your account</p>
                 </div>
 
                 <form className="space-y-6" onSubmit={handleSubmit}>
@@ -130,9 +130,9 @@ const Register = () => {
                 </form>
 
                 <div className="text-center">
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 dark:text-gray-400">
                         Already have an account?{' '}
-                        <Link to="/login" className="text-blue-600 hover:text-blue-500 font-medium">
+                        <Link to="/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-500 font-medium">
                             Sign in
                         </Link>
                     </p>
