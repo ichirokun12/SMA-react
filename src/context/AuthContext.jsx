@@ -1,5 +1,6 @@
 // src/context/AuthContext.jsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { authService } from '../services/authService';
 
 const AuthContext = createContext(null);
 
@@ -8,16 +9,18 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    // Check for existing session on mount
     useEffect(() => {
+        const token = localStorage.getItem('token');
         const storedUser = localStorage.getItem('user');
-        if (storedUser) {
+
+        if (token && storedUser) {
             try {
                 const userData = JSON.parse(storedUser);
                 setUser(userData);
                 setIsAuthenticated(true);
             } catch (error) {
                 console.error('Error parsing stored user:', error);
+                localStorage.removeItem('token');
                 localStorage.removeItem('user');
             }
         }
@@ -26,41 +29,48 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            // Simulate API call - Replace with actual API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            const response = await authService.login(credentials.email, credentials.password);
 
-            // Mock user data
+            // Store token and user data
+            localStorage.setItem('token', response.jwt);
+
             const userData = {
-                id: 1,
+                id: response.userId,
                 username: credentials.email.split('@')[0],
-                email: credentials.email
+                email: credentials.email,
             };
 
+            localStorage.setItem('user', JSON.stringify(userData));
             setUser(userData);
             setIsAuthenticated(true);
-            localStorage.setItem('user', JSON.stringify(userData));
 
             return { success: true };
         } catch (error) {
-            return { success: false, error: 'Login failed. Please try again.' };
+            console.error('Login error:', error);
+            return {
+                success: false,
+                error: error.response?.data?.message || 'Login failed. Please try again.'
+            };
         }
     };
 
     const register = async (userData) => {
         try {
-            // Simulate API call - Replace with actual API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            // Mock registration success
+            await authService.register(userData);
             return { success: true };
         } catch (error) {
-            return { success: false, error: 'Registration failed. Please try again.' };
+            console.error('Registration error:', error);
+            return {
+                success: false,
+                error: error.response?.data?.message || 'Registration failed. Please try again.'
+            };
         }
     };
 
     const logout = () => {
         setUser(null);
         setIsAuthenticated(false);
+        localStorage.removeItem('token');
         localStorage.removeItem('user');
     };
 
@@ -70,7 +80,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         login,
         register,
-        logout
+        logout,
     };
 
     if (loading) {
@@ -84,11 +94,7 @@ export const AuthProvider = ({ children }) => {
         );
     }
 
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

@@ -2,43 +2,25 @@
 import React, { useState, useEffect } from 'react';
 import PostCard from '../components/posts/PostCard';
 import Navbar from '../components/common/Navbar';
+import { postService } from '../services/postService';
 
 const Home = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const mockPosts = [
-                {
-                    id: 1,
-                    author: 'John Doe',
-                    content: 'Just built an amazing React application! The component architecture is so clean and maintainable. 🚀',
-                    timestamp: '2 hours ago',
-                    likes: 24,
-                    image: null
-                },
-                {
-                    id: 2,
-                    author: 'Jane Smith',
-                    content: 'Beautiful sunset today! Sometimes you need to step away from the code and appreciate nature.',
-                    timestamp: '4 hours ago',
-                    likes: 156,
-                    image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500'
-                },
-                {
-                    id: 3,
-                    author: 'Tech Guru',
-                    content: 'Pro tip: Always use meaningful variable names in your code. Your future self will thank you! 💡',
-                    timestamp: '1 day ago',
-                    likes: 89
-                }
-            ];
-
-            setTimeout(() => {
-                setPosts(mockPosts);
+            try {
+                setLoading(true);
+                const data = await postService.getAllPosts();
+                setPosts(data);
+            } catch (err) {
+                console.error('Error fetching posts:', err);
+                setError('Failed to load posts. Please try again later.');
+            } finally {
                 setLoading(false);
-            }, 1000);
+            }
         };
 
         fetchPosts();
@@ -71,15 +53,34 @@ const Home = () => {
         );
     }
 
+    if (error) {
+        return (
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+                <Navbar />
+                <div className="max-w-2xl mx-auto pt-8 px-4">
+                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-red-800 dark:text-red-200">
+                        {error}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
             <Navbar />
             <div className="max-w-2xl mx-auto pt-8 px-4">
-                <div className="space-y-6">
-                    {posts.map((post) => (
-                        <PostCard key={post.id} post={post} />
-                    ))}
-                </div>
+                {posts.length === 0 ? (
+                    <div className="text-center py-12">
+                        <p className="text-gray-600 dark:text-gray-400">No posts yet. Be the first to create one!</p>
+                    </div>
+                ) : (
+                    <div className="space-y-6">
+                        {posts.map((post) => (
+                            <PostCard key={post.postId} post={post} />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
