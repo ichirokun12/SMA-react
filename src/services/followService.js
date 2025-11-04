@@ -2,23 +2,27 @@
 import api from './api';
 
 export const followService = {
-    followUser: async (followerId, followingId) => {
-        const response = await api.post(`/follow/${followerId}/follow/${followingId}`);
+    followUser: async (followingId) => {
+        // Changed: No followerId in URL, uses authenticated user from token
+        const response = await api.post(`/followUser/follow/${followingId}`);
         return response.data;
     },
 
-    unfollowUser: async (followerId, followingId) => {
-        const response = await api.delete(`/follow/${followerId}/unfollow/${followingId}`);
+    unfollowUser: async (followingId) => {
+        // Changed: No followerId in URL, uses authenticated user from token
+        const response = await api.delete(`/followUser/unfollow/${followingId}`);
         return response.data;
     },
 
     getFollowers: async (userId) => {
-        const response = await api.get(`/follow/${userId}/followers`);
+        // Note: Backend uses /followUser but endpoint path is still /{userId}/followers
+        const response = await api.get(`/followUser/${userId}/followers`);
         return response.data;
     },
 
     getFollowing: async (userId) => {
-        const response = await api.get(`/follow/${userId}/following`);
+        // Note: Backend uses /followUser but endpoint path is still /{userId}/following
+        const response = await api.get(`/followUser/${userId}/following`);
         return response.data;
     },
 };

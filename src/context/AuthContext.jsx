@@ -29,15 +29,15 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            const response = await authService.login(credentials.email, credentials.password);
+            // Backend expects { username, password }
+            const response = await authService.login(credentials.username, credentials.password);
 
             // Store token and user data
             localStorage.setItem('token', response.jwt);
 
             const userData = {
                 id: response.userId,
-                username: credentials.email.split('@')[0],
-                email: credentials.email,
+                username: credentials.username,
             };
 
             localStorage.setItem('user', JSON.stringify(userData));
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
             console.error('Login error:', error);
             return {
                 success: false,
-                error: error.response?.data?.message || 'Login failed. Please try again.'
+                error: error.response?.data?.message || 'Login failed. Please check your credentials.'
             };
         }
     };

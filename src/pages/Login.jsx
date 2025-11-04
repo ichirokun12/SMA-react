@@ -7,7 +7,7 @@ import Input from '../components/ui/Input';
 
 const Login = () => {
     const [formData, setFormData] = useState({
-        email: '',
+        username: '',
         password: ''
     });
     const [errors, setErrors] = useState({});
@@ -53,13 +53,14 @@ const Login = () => {
 
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        label="Email Address"
-                        value={formData.email}
+                        id="username"
+                        name="username"
+                        type="text"
+                        label="Username"
+                        value={formData.username}
                         onChange={handleChange}
-                        error={errors.email}
+                        error={errors.username}
+                        placeholder="Enter your username"
                         required
                     />
 
@@ -71,11 +72,12 @@ const Login = () => {
                         value={formData.password}
                         onChange={handleChange}
                         error={errors.password}
+                        placeholder="Enter your password"
                         required
                     />
 
                     {errors.general && (
-                        <div className="text-red-600 text-sm text-center">
+                        <div className="text-red-600 dark:text-red-400 text-sm text-center">
                             {errors.general}
                         </div>
                     )}
