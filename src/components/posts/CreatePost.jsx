@@ -1,4 +1,4 @@
-// src/pages/CreatePost.jsx
+// src/pages/CreatePost.jsx - FIXED
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/common/Navbar';
@@ -27,11 +27,19 @@ const CreatePost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate at least one field is filled
+        if (!formData.opinion && !formData.fact) {
+            setError('Please provide at least an opinion or a fact');
+            return;
+        }
+
         setLoading(true);
         setError(null);
 
         try {
-            await postService.createPost(user.id, formData);
+            // Send post data without userId in URL - it's handled by JWT
+            await postService.createPost(formData);
             navigate('/');
         } catch (err) {
             console.error('Error creating post:', err);
@@ -42,10 +50,10 @@ const CreatePost = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen bg-gray-50 dark:bg-black">
             <Navbar />
             <div className="max-w-2xl mx-auto pt-8 px-4">
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                <div className="bg-white dark:bg-black rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                         Create New Post
                     </h1>
@@ -56,7 +64,7 @@ const CreatePost = () => {
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="space-y-6">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Opinion
@@ -67,7 +75,7 @@ const CreatePost = () => {
                                 onChange={handleChange}
                                 placeholder="Share your opinion..."
                                 rows={4}
-                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder-gray-400 dark:placeholder-gray-500"
                             />
                         </div>
 
@@ -81,7 +89,7 @@ const CreatePost = () => {
                                 onChange={handleChange}
                                 placeholder="Share a fact..."
                                 rows={4}
-                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder-gray-400 dark:placeholder-gray-500"
                             />
                         </div>
 
@@ -95,7 +103,7 @@ const CreatePost = () => {
                                 value={formData.image}
                                 onChange={handleChange}
                                 placeholder="https://example.com/image.jpg"
-                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 dark:placeholder-gray-500"
                             />
                         </div>
 
@@ -109,17 +117,18 @@ const CreatePost = () => {
                                 value={formData.ping}
                                 onChange={handleChange}
                                 placeholder="@username"
-                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 dark:placeholder-gray-500"
                             />
                         </div>
 
                         <div className="flex space-x-4">
                             <Button
-                                type="submit"
+                                type="button"
                                 variant="primary"
                                 size="lg"
                                 disabled={loading}
                                 className="flex-1"
+                                onClick={handleSubmit}
                             >
                                 {loading ? 'Publishing...' : 'Publish Post'}
                             </Button>
@@ -129,11 +138,12 @@ const CreatePost = () => {
                                 variant="secondary"
                                 size="lg"
                                 onClick={() => navigate('/')}
+                                className="dark:bg-gray-900 dark:text-white dark:hover:bg-gray-800"
                             >
                                 Cancel
                             </Button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

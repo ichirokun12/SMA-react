@@ -1,11 +1,11 @@
-// src/services/commentService.js
+// src/services/commentService.js - FIXED
 import api from './api';
 
 export const commentService = {
-    addComment: async (postId, comment) => {
-        // Changed: No userId in URL, uses authenticated user from token
+    // Fixed: Use the correct endpoint format
+    addComment: async (userId, postId, commentText) => {
         const response = await api.post(`/comment/addCommentOn/${postId}`, {
-            comment,
+            comment: commentText,
         });
         return response.data;
     },

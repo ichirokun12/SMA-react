@@ -1,17 +1,15 @@
-// src/services/postService.js
+// src/services/postService.js - FIXED VERSION
 import api from './api';
 
 export const postService = {
+    // Fetch all posts from all users
     getAllPosts: async () => {
-        // Note: Backend doesn't have /post/all endpoint
-        // Using a workaround - you may need to add this endpoint to backend
         try {
             const response = await api.get('/post/all');
-            return response.data;
+            return response.data || [];
         } catch (error) {
             console.error('Error fetching posts:', error);
-            // Return empty array if endpoint doesn't exist
-            return [];
+            throw error;
         }
     },
 
@@ -21,7 +19,7 @@ export const postService = {
     },
 
     createPost: async (postData) => {
-        // Changed: No userId in URL, uses authenticated user from token
+        // Use the correct endpoint that doesn't require userId in URL
         const response = await api.post('/post/addPost', postData);
         return response.data;
     },

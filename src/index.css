@@ -1,26 +1,63 @@
+/* src/index.css - AMOLED DARK MODE */
 @import "tailwindcss";
 
+:root {
+    --amoled-black: #000000;
+    --amoled-gray-900: #0a0a0a;
+    --amoled-gray-800: #121212;
+    --amoled-gray-700: #1a1a1a;
+}
 * {
     transition-property: background-color, border-color, color;
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
 }
 
-/* Custom scrollbar for dark mode */
+/* Override Tailwind dark mode colors for AMOLED */
+.dark {
+    background-color: var(--amoled-black);
+    color: #ffffff;
+}
+
+.dark .bg-gray-900 {
+    background-color: var(--amoled-black) !important;
+}
+
+.dark .bg-gray-800 {
+    background-color: var(--amoled-gray-900) !important;
+}
+
+.dark .bg-gray-700 {
+    background-color: var(--amoled-gray-800) !important;
+}
+
+.dark .border-gray-800 {
+    border-color: #1f1f1f !important;
+}
+
+.dark .border-gray-700 {
+    border-color: #2a2a2a !important;
+}
+
+/* Scrollbar for AMOLED dark mode */
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    @apply bg-gray-100 dark:bg-gray-800;
+    @apply bg-gray-100 dark:bg-black;
 }
 
 ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 dark:bg-gray-600 rounded-lg;
+    @apply bg-gray-300 rounded-lg;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-400 dark:bg-gray-500;
+.dark ::-webkit-scrollbar-thumb {
+    background-color: #2a2a2a;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background-color: #3a3a3a;
 }
 
 :root {
@@ -36,6 +73,9 @@ body {
     background-color: #ffffff;
 }
 
+.dark body {
+    background-color: var(--amoled-black);
+}
 #root {
     width: 100%;
     min-height: 100vh;
@@ -45,19 +85,20 @@ body {
     box-sizing: border-box;
 }
 
-::-webkit-scrollbar {
-    width: 6px;
+/* Enhanced focus states for dark mode */
+.dark .focus\:ring-blue-500:focus {
+    --tw-ring-color: rgb(59 130 246);
 }
 
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
+/* Card shadows in dark mode */
+.dark .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.05);
 }
 
-::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 10px;
+.dark .shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1);
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
+.dark .hover\:shadow-md:hover {
+    box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1);
 }
