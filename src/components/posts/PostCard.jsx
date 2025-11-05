@@ -1,4 +1,4 @@
-// src/components/posts/PostCard.jsx - FIXED WITH COMMENTS
+// src/components/posts/PostCard.jsx - FIXED USERNAME DISPLAY
 import React, { useState } from 'react';
 import { commentService } from '../../services/commentService';
 import { useAuth } from '../../context/AuthContext';
@@ -25,7 +25,6 @@ const PostCard = ({ post, onPostUpdate }) => {
         try {
             await commentService.addComment(user.id, post.postId, comment);
 
-            // Add comment to local state
             const newComment = {
                 commentId: Date.now(),
                 comment: comment,
@@ -36,7 +35,6 @@ const PostCard = ({ post, onPostUpdate }) => {
             setComments([...comments, newComment]);
             setComment('');
 
-            // Notify parent component if callback exists
             if (onPostUpdate) {
                 onPostUpdate();
             }
@@ -48,8 +46,25 @@ const PostCard = ({ post, onPostUpdate }) => {
         }
     };
 
-    // Extract username from assignedUser or use fallback
-    const authorName = post.assignedUser?.username || post.author || 'Anonymous';
+    // Extract username - check multiple possible locations
+    const getAuthorName = () => {
+        // First priority: assignedUser.username
+        if (post.assignedUser && post.assignedUser.username) {
+            return post.assignedUser.username;
+        }
+        // Second priority: direct author field
+        if (post.author) {
+            return post.author;
+        }
+        // Third priority: username field
+        if (post.username) {
+            return post.username;
+        }
+        // Fallback
+        return 'Anonymous';
+    };
+
+    const authorName = getAuthorName();
     const authorInitial = authorName.charAt(0).toUpperCase();
 
     // Format timestamp
@@ -57,7 +72,7 @@ const PostCard = ({ post, onPostUpdate }) => {
         if (!timestamp) return 'Just now';
         const date = new Date(timestamp);
         const now = new Date();
-        const diff = Math.floor((now - date) / 1000); // seconds
+        const diff = Math.floor((now - date) / 1000);
 
         if (diff < 60) return 'Just now';
         if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
@@ -160,7 +175,7 @@ const PostCard = ({ post, onPostUpdate }) => {
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder="Write a comment..."
-                            className="flex-1 px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                            className="flex-1 px-4 py-2 bg-gray-50 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                             disabled={isSubmitting}
                         />
                         <button
@@ -176,7 +191,7 @@ const PostCard = ({ post, onPostUpdate }) => {
                     {comments.length > 0 && (
                         <div className="space-y-3 max-h-60 overflow-y-auto">
                             {comments.map((c) => (
-                                <div key={c.commentId} className="flex space-x-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                                <div key={c.commentId} className="flex space-x-3 p-3 bg-gray-50 dark:bg-black rounded-lg border border-gray-200 dark:border-gray-800">
                                     <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-600 rounded-full flex items-center justify-center flex-shrink-0">
                                         <span className="text-white font-semibold text-xs">
                                             {(c.author || 'U').charAt(0).toUpperCase()}
