@@ -4,7 +4,7 @@ import { useTheme } from '@context/ThemeContext';
 
 const SettingsDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { theme, toggleTheme, isDark } = useTheme();
+    const { theme, setLightMode, setDarkMode, setAmoledMode, isLight, isDark, isAmoled } = useTheme();
     const dropdownRef = useRef(null);
 
     // Close dropdown when clicking outside
@@ -50,61 +50,86 @@ const SettingsDropdown = () => {
 
             {/* Dropdown Menu */}
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
                     <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
                         <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
                             Settings
                         </h3>
                     </div>
 
-                    {/* Dark Mode Toggle */}
-                    <div className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                                {isDark ? (
-                                    <svg
-                                        className="w-5 h-5 text-yellow-500"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
+                    {/* Theme Selection */}
+                    <div className="px-4 py-3">
+                        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3">
+                            Theme
+                        </p>
+
+                        <div className="space-y-2">
+                            {/* Light Mode */}
+                            <button
+                                onClick={setLightMode}
+                                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${
+                                    isLight
+                                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                                }`}
+                            >
+                                <div className="flex items-center space-x-3">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                         <path
                                             fillRule="evenodd"
                                             d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
                                             clipRule="evenodd"
                                         />
                                     </svg>
-                                ) : (
-                                    <svg
-                                        className="w-5 h-5 text-gray-700 dark:text-gray-300"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                                    <span className="text-sm font-medium">Light</span>
+                                </div>
+                                {isLight && (
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                     </svg>
                                 )}
-                                <div>
-                                    <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                        Dark Mode
-                                    </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                        {isDark ? 'Enabled' : 'Disabled'}
-                                    </p>
-                                </div>
-                            </div>
+                            </button>
 
-                            {/* Toggle Switch */}
+                            {/* Dark Mode */}
                             <button
-                                onClick={toggleTheme}
-                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                                    isDark ? 'bg-blue-600' : 'bg-gray-200'
+                                onClick={setDarkMode}
+                                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${
+                                    isDark
+                                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
                                 }`}
-                                aria-label="Toggle dark mode"
                             >
-                <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        isDark ? 'translate-x-6' : 'translate-x-1'
-                    }`}
-                />
+                                <div className="flex items-center space-x-3">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                                    </svg>
+                                    <span className="text-sm font-medium">Dark</span>
+                                </div>
+                                {isDark && (
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                )}
+                            </button>
+
+                            {/* AMOLED Black Mode */}
+                            <button
+                                onClick={setAmoledMode}
+                                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${
+                                    isAmoled
+                                        ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
+                                }`}
+                            >
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-5 h-5 bg-black rounded-full border-2 border-current"></div>
+                                    <span className="text-sm font-medium">AMOLED Black</span>
+                                </div>
+                                {isAmoled && (
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                )}
                             </button>
                         </div>
                     </div>

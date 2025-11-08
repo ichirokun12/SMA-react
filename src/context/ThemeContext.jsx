@@ -1,4 +1,4 @@
-
+// src/context/ThemeContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
@@ -14,7 +14,7 @@ export const useTheme = () => {
 export const ThemeProvider = ({ children }) => {
     const getInitialTheme = () => {
         const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
+        if (savedTheme && ['light', 'dark', 'amoled'].includes(savedTheme)) {
             return savedTheme;
         }
         // Check system preference
@@ -29,22 +29,44 @@ export const ThemeProvider = ({ children }) => {
     // Update document class and localStorage when theme changes
     useEffect(() => {
         const root = document.documentElement;
-        if (theme === 'dark') {
+
+        // Remove all theme classes
+        root.classList.remove('dark', 'amoled');
+
+        // Add appropriate class
+        if (theme === 'dark' || theme === 'amoled') {
             root.classList.add('dark');
-        } else {
-            root.classList.remove('dark');
         }
+        if (theme === 'amoled') {
+            root.classList.add('amoled');
+        }
+
         localStorage.setItem('theme', theme);
     }, [theme]);
 
     const toggleTheme = () => {
-        setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+        setTheme((prevTheme) => {
+            // Cycle: light -> dark -> amoled -> light
+            if (prevTheme === 'light') return 'dark';
+            if (prevTheme === 'dark') return 'amoled';
+            return 'light';
+        });
     };
+
+    const setLightMode = () => setTheme('light');
+    const setDarkMode = () => setTheme('dark');
+    const setAmoledMode = () => setTheme('amoled');
 
     const value = {
         theme,
+        setTheme,
         toggleTheme,
-        isDark: theme === 'dark'
+        setLightMode,
+        setDarkMode,
+        setAmoledMode,
+        isLight: theme === 'light',
+        isDark: theme === 'dark',
+        isAmoled: theme === 'amoled'
     };
 
     return (

@@ -1,11 +1,23 @@
-/* src/index.css - TRUE AMOLED BLACK MODE */
+/* src/index.css - Light/Dark/AMOLED Support */
 @import "tailwindcss";
 
 :root {
+    /* Light Mode Colors */
+    --light-bg: #ffffff;
+    --light-bg-secondary: #f9fafb;
+    --light-border: #e5e7eb;
+    --light-text: #111827;
+    --light-text-secondary: #6b7280;
+
+    /* Dark Mode Colors */
+    --dark-bg: #1f2937;
+    --dark-bg-secondary: #111827;
+    --dark-border: #374151;
+
+    /* AMOLED Black Colors */
     --amoled-black: #000000;
     --amoled-gray-900: #0a0a0a;
     --amoled-gray-800: #050505;
-    --amoled-gray-700: #1a1a1a;
     --amoled-border: #1f1f1f;
 }
 
@@ -13,110 +25,6 @@
     transition-property: background-color, border-color, color;
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
-}
-
-/* Root dark mode overrides */
-.dark {
-    background-color: var(--amoled-black) !important;
-    color: #ffffff;
-}
-
-/* Body override */
-.dark body {
-    background-color: var(--amoled-black) !important;
-}
-
-/* All background overrides for AMOLED */
-.dark .bg-gray-50 {
-    background-color: var(--amoled-black) !important;
-}
-
-.dark .bg-gray-900 {
-    background-color: var(--amoled-black) !important;
-}
-
-.dark .bg-gray-800 {
-    background-color: var(--amoled-black) !important;
-}
-
-.dark .bg-gray-700 {
-    background-color: var(--amoled-gray-800) !important;
-}
-
-.dark .bg-white {
-    background-color: var(--amoled-black) !important;
-}
-
-/* Border colors */
-.dark .border-gray-200 {
-    border-color: var(--amoled-border) !important;
-}
-
-.dark .border-gray-700 {
-    border-color: var(--amoled-border) !important;
-}
-
-.dark .border-gray-800 {
-    border-color: var(--amoled-border) !important;
-}
-
-.dark .border-gray-100 {
-    border-color: var(--amoled-border) !important;
-}
-
-/* Hover states */
-.dark .hover\:bg-gray-50:hover {
-    background-color: var(--amoled-gray-900) !important;
-}
-
-.dark .hover\:bg-gray-700:hover {
-    background-color: var(--amoled-gray-800) !important;
-}
-
-.dark .hover\:bg-gray-800:hover {
-    background-color: var(--amoled-gray-900) !important;
-}
-
-.dark .hover\:bg-gray-900:hover {
-    background-color: var(--amoled-gray-800) !important;
-}
-
-/* Input and textarea backgrounds */
-.dark input,
-.dark textarea {
-    background-color: var(--amoled-black) !important;
-    border-color: var(--amoled-border) !important;
-}
-
-.dark input:focus,
-.dark textarea:focus {
-    background-color: var(--amoled-gray-900) !important;
-}
-
-/* Scrollbar for AMOLED dark mode */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: var(--amoled-black);
-}
-
-.dark ::-webkit-scrollbar-track {
-    background-color: var(--amoled-black);
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #2a2a2a;
-    border-radius: 4px;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-    background-color: #2a2a2a;
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-    background-color: #3a3a3a;
 }
 
 /* Base styles */
@@ -130,11 +38,7 @@ body {
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
-    background-color: #ffffff;
-}
-
-.dark body {
-    background-color: var(--amoled-black) !important;
+    background-color: var(--light-bg);
 }
 
 #root {
@@ -143,52 +47,194 @@ body {
     background-color: inherit;
 }
 
-.dark #root {
-    background-color: var(--amoled-black) !important;
-}
-
 * {
     box-sizing: border-box;
 }
 
-/* Focus states */
-.dark .focus\:ring-blue-500:focus {
-    --tw-ring-color: rgb(59 130 246);
+/* ==================== DARK MODE ==================== */
+.dark {
+    background-color: var(--dark-bg-secondary);
+    color: #ffffff;
 }
 
-/* Card shadows in dark mode - very subtle */
-.dark .shadow-sm {
-    box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.03);
+.dark body {
+    background-color: var(--dark-bg-secondary);
 }
 
-.dark .shadow-md {
-    box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.05);
+.dark #root {
+    background-color: var(--dark-bg-secondary);
 }
 
-.dark .hover\:shadow-md:hover {
-    box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.05);
+.dark .bg-gray-50 {
+    background-color: var(--dark-bg-secondary);
 }
 
-/* Dropdown and modal backgrounds */
-.dark [role="menu"],
-.dark [role="dialog"] {
+.dark .bg-gray-900 {
+    background-color: var(--dark-bg);
+}
+
+.dark .bg-gray-800 {
+    background-color: var(--dark-bg);
+}
+
+.dark .bg-white {
+    background-color: var(--dark-bg);
+}
+
+.dark .border-gray-200 {
+    border-color: var(--dark-border);
+}
+
+.dark .border-gray-700 {
+    border-color: var(--dark-border);
+}
+
+.dark .border-gray-800 {
+    border-color: var(--dark-border);
+}
+
+/* ==================== AMOLED BLACK MODE ==================== */
+.amoled {
     background-color: var(--amoled-black) !important;
 }
 
-/* Button hover states */
-.dark button:hover {
+.amoled body {
+    background-color: var(--amoled-black) !important;
+}
+
+.amoled #root {
+    background-color: var(--amoled-black) !important;
+}
+
+.amoled .bg-gray-50 {
+    background-color: var(--amoled-black) !important;
+}
+
+.amoled .bg-gray-900 {
+    background-color: var(--amoled-black) !important;
+}
+
+.amoled .bg-gray-800 {
+    background-color: var(--amoled-black) !important;
+}
+
+.amoled .bg-gray-700 {
+    background-color: var(--amoled-gray-800) !important;
+}
+
+.amoled .bg-white {
+    background-color: var(--amoled-black) !important;
+}
+
+.amoled .border-gray-200 {
+    border-color: var(--amoled-border) !important;
+}
+
+.amoled .border-gray-700 {
+    border-color: var(--amoled-border) !important;
+}
+
+.amoled .border-gray-800 {
+    border-color: var(--amoled-border) !important;
+}
+
+.amoled .border-gray-100 {
+    border-color: var(--amoled-border) !important;
+}
+
+.amoled .hover\:bg-gray-50:hover {
     background-color: var(--amoled-gray-900) !important;
 }
 
-/* Ensure all containers are black */
-.dark .container,
-.dark .max-w-2xl,
-.dark .max-w-7xl {
-    background-color: transparent;
+.amoled .hover\:bg-gray-700:hover {
+    background-color: var(--amoled-gray-800) !important;
 }
 
-/* Navigation bar */
-.dark nav {
+.amoled .hover\:bg-gray-800:hover {
+    background-color: var(--amoled-gray-900) !important;
+}
+
+.amoled input,
+.amoled textarea {
     background-color: var(--amoled-black) !important;
-    border-bottom-color: var(--amoled-border) !important;
+    border-color: var(--amoled-border) !important;
+}
+
+.amoled input:focus,
+.amoled textarea:focus {
+    background-color: var(--amoled-gray-900) !important;
+}
+
+/* ==================== SCROLLBAR ==================== */
+/* Light Mode Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #a8a8a8;
+}
+
+/* Dark Mode Scrollbar */
+.dark ::-webkit-scrollbar-track {
+    background-color: var(--dark-bg-secondary);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background-color: #4b5563;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background-color: #6b7280;
+}
+
+/* AMOLED Scrollbar */
+.amoled ::-webkit-scrollbar-track {
+    background-color: var(--amoled-black);
+}
+
+.amoled ::-webkit-scrollbar-thumb {
+    background-color: #2a2a2a;
+}
+
+.amoled ::-webkit-scrollbar-thumb:hover {
+    background-color: #3a3a3a;
+}
+
+/* ==================== SHADOWS ==================== */
+/* Light mode shadows stay default */
+
+/* Dark mode shadows */
+.dark .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+}
+
+.dark .shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.dark .hover\:shadow-md:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* AMOLED shadows - very subtle */
+.amoled .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.03);
+}
+
+.amoled .shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.05);
+}
+
+.amoled .hover\:shadow-md:hover {
+    box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.05);
 }
