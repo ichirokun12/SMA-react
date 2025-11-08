@@ -1,12 +1,32 @@
-// src/services/postService.js - FIXED VERSION
+// src/services/postService.js - DEBUG VERSION
 import api from './api';
 
 export const postService = {
-    // Fetch all posts from all users
     getAllPosts: async () => {
         try {
             const response = await api.get('/post/all');
-            return response.data || [];
+            const posts = response.data || [];
+
+            // Debug: Log the raw response
+            console.log('Raw posts from backend:', posts);
+
+            // Add fallback username if missing
+            const processedPosts = posts.map(post => {
+                console.log('Processing post:', post);
+                console.log('Post assignedUser:', post.assignedUser);
+
+                // If assignedUser exists but username is missing
+                if (post.assignedUser && !post.assignedUser.username) {
+                    // Try to get from user data in localStorage
+                    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+                    post.assignedUser.username = currentUser.username || 'User';
+                }
+
+                return post;
+            });
+
+            console.log('Processed posts:', processedPosts);
+            return processedPosts;
         } catch (error) {
             console.error('Error fetching posts:', error);
             throw error;
@@ -19,7 +39,6 @@ export const postService = {
     },
 
     createPost: async (postData) => {
-        // Use the correct endpoint that doesn't require userId in URL
         const response = await api.post('/post/addPost', postData);
         return response.data;
     },
