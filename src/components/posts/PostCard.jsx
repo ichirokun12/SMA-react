@@ -1,5 +1,6 @@
-// src/components/posts/PostCard.jsx - FIXED USERNAME DISPLAY
+// src/components/posts/PostCard.jsx - WITH CLICKABLE USERNAME
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { commentService } from '../../services/commentService';
 import { useAuth } from '../../context/AuthContext';
 
@@ -11,6 +12,7 @@ const PostCard = ({ post, onPostUpdate }) => {
     const [comments, setComments] = useState(post.comments || []);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     const handleLike = () => {
         setLiked(!liked);
@@ -46,26 +48,22 @@ const PostCard = ({ post, onPostUpdate }) => {
         }
     };
 
-    // Extract username - check multiple possible locations
-    const getAuthorName = () => {
-        // First priority: assignedUser.username
-        if (post.assignedUser && post.assignedUser.username) {
-            return post.assignedUser.username;
-        }
-        // Second priority: direct author field
-        if (post.author) {
-            return post.author;
-        }
-        // Third priority: username field
-        if (post.username) {
-            return post.username;
-        }
-        // Fallback
-        return 'Anonymous';
+    // Extract username and userId
+    const getAuthorInfo = () => {
+        const username = post.assignedUser?.username || post.author || post.username || 'Anonymous';
+        const userId = post.assignedUser?.userId || post.userId;
+        return { username, userId };
     };
 
-    const authorName = getAuthorName();
+    const { username: authorName, userId: authorId } = getAuthorInfo();
     const authorInitial = authorName.charAt(0).toUpperCase();
+
+    // Navigate to profile
+    const goToProfile = (userId) => {
+        if (userId) {
+            navigate(`/profile/${userId}`);
+        }
+    };
 
     // Format timestamp
     const formatTimestamp = (timestamp) => {
@@ -84,15 +82,22 @@ const PostCard = ({ post, onPostUpdate }) => {
         <div className="bg-white dark:bg-black rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6 space-y-4 hover:shadow-md transition-all duration-200">
             {/* Post Header */}
             <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                <button
+                    onClick={() => goToProfile(authorId)}
+                    className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    aria-label={`Go to ${authorName}'s profile`}
+                >
                     <span className="text-white font-semibold text-sm">
                         {authorInitial}
                     </span>
-                </div>
+                </button>
                 <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-gray-900 dark:text-white truncate">
+                    <button
+                        onClick={() => goToProfile(authorId)}
+                        className="font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 truncate block text-left transition-colors"
+                    >
                         {authorName}
-                    </h3>
+                    </button>
                     <p className="text-gray-500 dark:text-gray-400 text-sm">
                         {formatTimestamp(post.timestamp || post.createdAt)}
                     </p>
