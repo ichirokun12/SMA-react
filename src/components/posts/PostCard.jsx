@@ -1,5 +1,5 @@
-// src/components/posts/PostCard.jsx - WITH CLICKABLE USERNAME
-import React, { useState } from 'react';
+// src/components/posts/PostCard.jsx - WITH AUTHOR FIX
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { commentService } from '../../services/commentService';
 import { useAuth } from '../../context/AuthContext';
@@ -9,10 +9,23 @@ const PostCard = ({ post, onPostUpdate }) => {
     const [likes, setLikes] = useState(post.likes || 0);
     const [showComments, setShowComments] = useState(false);
     const [comment, setComment] = useState('');
-    const [comments, setComments] = useState(post.comments || []);
+    const [comments, setComments] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { user } = useAuth();
     const navigate = useNavigate();
+
+    // Initialize comments with author fallback
+    useEffect(() => {
+        const processedComments = (post.comments || []).map(c => ({
+            ...c,
+            // If author is "User" or missing, try to get from localStorage
+            author: (c.author && c.author !== "User") ? c.author :
+                localStorage.getItem(`comment_${c.commentId}_author`) ||
+                c.author ||
+                'Anonymous'
+        }));
+        setComments(processedComments);
+    }, [post.comments]);
 
     const handleLike = () => {
         setLiked(!liked);
@@ -33,6 +46,9 @@ const PostCard = ({ post, onPostUpdate }) => {
                 author: user.username,
                 timestamp: new Date().toISOString()
             };
+
+            // Store author in localStorage as backup
+            localStorage.setItem(`comment_${newComment.commentId}_author`, user.username);
 
             setComments([...comments, newComment]);
             setComment('');
