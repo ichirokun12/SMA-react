@@ -1,20 +1,14 @@
-// src/components/common/Navbar.jsx - UPDATED WITH PROFILE ICON
+// src/components/common/Navbar.jsx - UPDATED WITHOUT LOGOUT & WELCOME
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@context/AuthContext';
 import { useTheme } from '@context/ThemeContext';
-import Button from '../ui/Button';
 import SettingsDropdown from './SettingsDropdown';
 
 const Navbar = () => {
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
     const { isDark } = useTheme();
     const navigate = useNavigate();
-
-    const handleLogout = () => {
-        logout();
-        navigate('/login');
-    };
 
     const goToProfile = () => {
         if (user?.id) {
@@ -39,18 +33,8 @@ const Navbar = () => {
                         >
                             Home
                         </Link>
-                        <Link
-                            to="/create-post"
-                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                        >
-                            Create Post
-                        </Link>
 
                         <div className="flex items-center space-x-3">
-                            <span className="text-gray-700 dark:text-gray-300 text-sm">
-                                Welcome, {user?.username || 'User'}
-                            </span>
-
                             {/* Profile Icon Button */}
                             <button
                                 onClick={goToProfile}
@@ -65,15 +49,6 @@ const Navbar = () => {
 
                             {/* Settings Dropdown */}
                             <SettingsDropdown />
-
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={handleLogout}
-                                className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
-                            >
-                                Logout
-                            </Button>
                         </div>
                     </div>
                 </div>

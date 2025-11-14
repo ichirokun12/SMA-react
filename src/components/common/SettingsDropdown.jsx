@@ -1,10 +1,14 @@
-// src/components/common/SettingsDropdown.jsx
+// src/components/common/SettingsDropdown.jsx - WITH LOGOUT
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@context/ThemeContext';
+import { useAuth } from '@context/AuthContext';
 
 const SettingsDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { theme, setLightMode, setDarkMode, setAmoledMode, isLight, isDark, isAmoled } = useTheme();
+    const { logout } = useAuth();
+    const navigate = useNavigate();
     const dropdownRef = useRef(null);
 
     // Close dropdown when clicking outside
@@ -18,6 +22,11 @@ const SettingsDropdown = () => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
 
     return (
         <div className="relative" ref={dropdownRef}>
@@ -144,6 +153,19 @@ const SettingsDropdown = () => {
                         </button>
                         <button className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                             Notifications
+                        </button>
+                    </div>
+
+                    {/* Logout Button */}
+                    <div className="border-t border-gray-200 dark:border-gray-700 mt-2 pt-2">
+                        <button
+                            onClick={handleLogout}
+                            className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex items-center space-x-2"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            <span>Logout</span>
                         </button>
                     </div>
                 </div>
