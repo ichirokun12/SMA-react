@@ -1,14 +1,13 @@
-// src/components/common/Navbar.jsx - UPDATED WITHOUT LOGOUT & WELCOME
+// src/components/common/Navbar.jsx - UPDATED WITH HOME ICON & ACRYLIC THEME
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@context/AuthContext';
-import { useTheme } from '@context/ThemeContext';
 import SettingsDropdown from './SettingsDropdown';
 
 const Navbar = () => {
     const { user } = useAuth();
-    const { isDark } = useTheme();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const goToProfile = () => {
         if (user?.id) {
@@ -16,22 +15,32 @@ const Navbar = () => {
         }
     };
 
+    const isActive = (path) => location.pathname === path;
+
     return (
-        <nav className="bg-white dark:bg-black shadow-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 transition-colors duration-200">
+        <nav className="bg-white/80 dark:bg-black/80 backdrop-blur-xl shadow-sm border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-50 transition-colors duration-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center">
-                        <Link to="/" className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                        <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                             SocialApp
                         </Link>
                     </div>
 
                     <div className="flex items-center space-x-4">
+                        {/* Home Icon */}
                         <Link
                             to="/"
-                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                            className={`p-2 rounded-lg transition-all duration-200 ${
+                                isActive('/')
+                                    ? 'bg-blue-100/80 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100/80 dark:hover:bg-gray-800/80'
+                            }`}
+                            aria-label="Home"
                         >
-                            Home
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
                         </Link>
 
                         <div className="flex items-center space-x-3">
